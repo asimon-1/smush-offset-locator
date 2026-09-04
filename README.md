@@ -46,22 +46,9 @@ And upload the resulting plugin `target\aarch64-skyline-switch\release\libsmush_
 
 In your terminal, listen to the Skyline log, replacing the ip address here with the address of your Switch.
 
-Windows terminal:
-```cmd
-cargo skyline set-ip 192.168.1.100
-cargo skyline listen | findstr "OffsetLocator"
-```
-
-Powershell:
-```powershell
-cargo skyline set-ip 192.168.1.100
-cargo skyline listen | Select-String "OffsetLocator"
-```
-
-Bash:
 ```bash
 cargo skyline set-ip 192.168.1.100
-cargo skyline listen | grep OffsetLocator
+cargo skyline listen
 ```
 
 Once you start up smash you will see the log lines with your new updates
