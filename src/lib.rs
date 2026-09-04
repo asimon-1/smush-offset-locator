@@ -18,21 +18,40 @@ impl HookAddress {
         match self.old_address {
             Some(old_address) => {
                 println!(
-                    "Looking for {}, old address is {:#x}",
+                    "[OffsetLocator] Looking for {}, old address is {:#x}",
                     self.name, old_address
                 )
             }
-            None => println!("Looking for {}, old address not known", self.name),
+            None => println!(
+                "[OffsetLocator] Looking for {}, old address not known",
+                self.name
+            ),
         };
         if let Some(offset) = exact_search(self.bytes) {
-            println!("Found exact match for {} at {:#x}", self.name, offset);
+            println!(
+                "[OffsetLocator] Found exact match for {} at {:#x}",
+                self.name, offset
+            );
         } else if let Some((offset, bytes)) = fuzzy_search(self.bytes) {
-            println!("Found fuzzy match for {} at {:#x}", self.name, offset);
-            println!("Update the bytes to {:#x?}", bytes)
+            println!(
+                "[OffsetLocator] Found fuzzy match for {} at {:#x}",
+                self.name, offset
+            );
+            println!(
+                "[OffsetLocator] Update {} search bytes to {:#x?}",
+                self.name, bytes
+            )
         } else {
-            println!("Something went wrong, couldn't find {}", self.name);
+            println!(
+                "[OffsetLocator] Something went wrong, couldn't find {}",
+                self.name
+            );
         }
-        println!("Done looking for {} in {:?}", self.name, started.elapsed());
+        println!(
+            "[OffsetLocator] Done looking for {} in {:?}",
+            self.name,
+            started.elapsed()
+        );
     }
 }
 
@@ -61,7 +80,7 @@ pub fn fuzzy_search(needle: &[u8]) -> Option<(usize, &[u8])> {
             .windows(needle.len())
             .enumerate()
             .min_by_key(|&(_, w)| (hamming::distance_fast(w, needle).unwrap_or(u64::MAX), w))
-            .expect("Haystack is empty!"),
+            .expect("[OffsetLocator] Haystack is empty!"),
     )
 }
 
